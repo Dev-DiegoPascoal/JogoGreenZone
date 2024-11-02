@@ -21,6 +21,12 @@ musicaFundo = pygame.mixer.Sound("assets/Musicas/CidadeDeserta.mp3")
 #Carrega a fonte a ser usada no jogo
 fonteTempo = pygame.font.Font("assets/Fontes/BAD GRUNGE.ttf", 80)
 
+#Carrega a fonte a ser na pontuação e na quantidade de obstáculos destruídos
+fonteObstaculosPontos = pygame.font.Font("assets/Fontes/BAD GRUNGE.ttf", 40)
+
+#Carrega a fonte a ser na pontuação e na quantidade de obstáculos destruídos
+fonteGameOver = pygame.font.Font("assets/Fontes/GAME OVER.ttf", 150)
+
 #Carrega a spritesheet para nosso projeto.
 folhaSpritesAndandoDeCarro = pygame.image.load("assets/Golfista/AndandoDeCarro.png").convert_alpha()
 folhaSpritesAtack = pygame.image.load("assets/Golfista/Atack.png").convert_alpha()
@@ -85,7 +91,7 @@ for i in range(6):
 
 for i in range(4):
     frame = folhaSpritesMorrendo.subsurface(i * 70, 0, 70, 70)
-    frame = pygame.transform.scale(frame, (150, 150))
+    frame = pygame.transform.scale(frame, (135, 135))
     listFramesMorrendo.append(frame)
 
 for i in range(6):
@@ -207,8 +213,10 @@ vidas = 3
 GameOver = False
 tempoJogo = 0
 pontuacaoJogo = 0
+obstaculoDestruido = 0
 tempo_acumulado = 0  # Variável para acumular o tempo decorrido
 intervalo_tempo = 5  # Intervalo de tempo desejado em segundos
+DURACAO_FRAME_ATAQUE = 0.1
 
 listaObstaculos = [] # Lista de obstáculos que aparecerão na tela
 
@@ -259,9 +267,36 @@ while True:
 
                 listaObstaculos.append(obstaculo)
 
+        # Verifica o ataque
+        listTeclas = pygame.key.get_pressed()
+        if listTeclas[pygame.K_a] and not atacando:
+            atacando = True
+            indexFrameAtack = 0
+            tempoAnimacaoAtack = 0.0
+
+            # Atualiza a animação de ataque
+            if atacando:
+                tempoAnimacaoAtack += dt
+                if tempoAnimacaoAtack >= DURACAO_FRAME_ATAQUE:
+                    indexFrameAtack += 1
+                    tempoAnimacaoAtack = 0.0
+                    if indexFrameAtack >= len(listFramesAtack):
+                        indexFrameAtack = 0
+                        atacando = False
+
+            # Definir a área de alcance do ataque
+        alcanceAtaque = pygame.Rect(personagemRect.centerx, personagemRect.centery - 20, 100, 50)  # Ajuste o alcance conforme necessário
+
+        # Verifica a colisão entre o ataque e os obstáculos
+        for obstaculo in listaObstaculos[:]:  # Usa uma cópia da lista para evitar problemas ao remover itens
+            if alcanceAtaque.colliderect(obstaculo["rect"]):  # Verifica a colisão
+                listaObstaculos.remove(obstaculo)  # Remove o obstáculo se colidir
+                pontuacaoJogo += 50
+                obstaculoDestruido += 1  
+                   
     tela.fill((255, 255, 255))  # Preenche a tela com a cor branca
 
-    # Verifica se o jogador perdeu todas as vidas
+    # Verifica se o jogador perdeu todas as vidasa
     if vidas <= 0:
         GameOver = True
 
@@ -301,17 +336,20 @@ while True:
     # Cria o texto para o tempo de jogo
     textoTempo = fonteTempo.render(str(int(tempoJogo)), False, (255, 255, 255))
 
-    # # Cria o texto para a Pontuação
-    # textoPontuacao = fonteTempo.render(str(int(pontuacaoJogo)), False, (255, 255, 255))
+    # Cria o texto para a Pontuação com uma mensagem
+    textoPontuacao = fonteObstaculosPontos.render(f"Pontos: {int(pontuacaoJogo)}", False, (255, 255, 255))
 
     # Cria o texto para a Pontuação com uma mensagem
-    textoPontuacao = fonteTempo.render(f"Pontos: {int(pontuacaoJogo)}", False, (255, 255, 255))
+    textoObstaculoDestruido = fonteObstaculosPontos.render(f"Obstaculos: {int(obstaculoDestruido)}", False, (255, 255, 255))
 
     # Desenha o tempo de jogo na tela
     tela.blit(textoTempo, (tamanhoTela[0] / 2, 30))
 
      # Desenha o tempo de jogo na tela
     tela.blit(textoPontuacao, (tamanhoTela[0] / 38, 85))
+
+     # Desenha o tempo de jogo na tela
+    tela.blit(textoObstaculoDestruido, (tamanhoTela[0] / 38, 120))
 
      # Cria o texto para as vidas do jogador
     for i in range(vidas):
@@ -320,12 +358,12 @@ while True:
     # DESENHA O MENU DE REINICIAR O JOGO
     if GameOver:
         # Cria o texto para o menu de reiniciar o jogo
-        textoGameOver = fonteTempo.render("GAME OVER", False, (255, 255, 255))
-        textoReiniciar = fonteTempo.render("Aperte a Tecla ENTER para recomeçar", False, (255, 255, 255))
+        textoGameOver = fonteGameOver.render("GAME OVER", False, (255, 255, 255))
+        textoReiniciar = fonteGameOver.render("Tecle ENTER para recomeçar", False, (255, 255, 255))
        
         # Desenha o menu de reiniciar o jogo na tela
         tela.blit(textoGameOver, (484, 260))
-        tela.blit(textoReiniciar, (84, 360))
+        tela.blit(textoReiniciar, (270, 360))
 
      # DESENHA OS OBSTÁCULOS NA TELA
     for obstaculo in listaObstaculos:
@@ -360,7 +398,6 @@ while True:
         indexFrameAndando = (indexFrameAndando + 1) % len(listFramesAndando)
         tempoAnimacaoAndando = 0.0
 
-
     # Verifica se o tempo de animação do personagem andando é maior ou igual ao tempo de animação
     if tempoAnimacaoAtack >= 1 / velocidadeAnimacaoAtack:
         # Atualiza o frame do personagem andando
@@ -369,28 +406,24 @@ while True:
         # Atualiza a animação do personagem andando
     tempoAnimacaoAtack += dt
 
-         # Atualiza a animação do personagem morto
+    # Atualiza a animação do personagem morto
     if GameOver and indexFrameMorrendo != len(listFramesMorrendo) - 1:
         tempoAnimacaoMorrendo += dt
+        
     # Verifica se o tempo de animação do personagem morto é maior ou igual ao tempo de animação
     if tempoAnimacaoMorrendo >= 1 / velocidadeAnimacaoMorrendo:
         # Atualiza o frame do personagem morto
         indexFrameMorrendo = (indexFrameMorrendo + 1) % len(listFramesMorrendo)
         tempoAnimacaoMorrendo = 0.0
 
-    
-
     # Verifica se o personagem está andando ou atacando
     estaAndando = False
     atacando = False
-    
 
     # Função para realizar o ataque
     def atacar():
         global atacando
         atacando = True
-                
-        print("Personagem atacando!")
 
     # Pega as teclas que foram pressionadas
     listTeclas = pygame.key.get_pressed()
@@ -423,6 +456,7 @@ while True:
             tempoMaximoEntreObstaculos = 3000
             listaObstaculos = []
             indexFrameDead = 0
+            obstaculoDestruido = 0
 
     # Gravidade Aumenta
     gravidade += 2
@@ -436,7 +470,6 @@ while True:
 
     personagemColisaoRect.midbottom = personagemRect.midbottom
     
-
    # Desenha o personagem
     if not GameOver:
         if atacando:  # Verifica se o personagem está atacando
