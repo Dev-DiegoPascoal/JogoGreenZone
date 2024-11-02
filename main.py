@@ -64,27 +64,27 @@ for i in range(3):
     listFramesAndando.append(frame)
 
 for i in range(4):
-    frame = folhaSpritesAndandoDeCarro.subsurface(i * 60, 0, 60, 60)
+    frame = folhaSpritesAndandoDeCarro.subsurface(i * 70, 0, 70, 70)
     frame = pygame.transform.scale(frame, (150, 150))
     listFramesAndandoCarro.append(frame)
 
 for i in range(6):
-    frame = folhaSpritesAtack.subsurface(i * 60, 0, 60, 60)
-    frame = pygame.transform.scale(frame, (150, 150))
+    frame = folhaSpritesAtack.subsurface(i * 70, 0, 70, 70)
+    frame = pygame.transform.scale(frame, (141, 141))
     listFramesAtack.append(frame)
 
 for i in range(4):
-    frame = folhaSpritesCarroVazioParado.subsurface(i * 60, 0, 60, 60)
+    frame = folhaSpritesCarroVazioParado.subsurface(i * 70, 0, 70, 70)
     frame = pygame.transform.scale(frame, (150, 150))
     listFramesCarroVazioParado.append(frame)
 
 for i in range(6):
-    frame = folhaSpritesDescendoVeiculo.subsurface(i * 60, 0, 60, 60)
+    frame = folhaSpritesDescendoVeiculo.subsurface(i * 70, 0, 70, 70)
     frame = pygame.transform.scale(frame, (150, 150))
     listFramesDescendoVeiculo.append(frame)
 
 for i in range(4):
-    frame = folhaSpritesMorrendo.subsurface(i * 60, 0, 60, 60)
+    frame = folhaSpritesMorrendo.subsurface(i * 70, 0, 70, 70)
     frame = pygame.transform.scale(frame, (150, 150))
     listFramesMorrendo.append(frame)
 
@@ -122,7 +122,6 @@ velocidadeAnimacaoAndandoDeCarro = 5
 indexFrameAtack = 0
 tempoAnimacaoAtack = 0.0
 velocidadeAnimacaoAtack = 5
-
 # Variaveis da animação do carro parado
 indexFrameCarroVazioParado = 0
 tempoAnimacaoCarroVazioParado = 0.0
@@ -174,6 +173,7 @@ for i in range(len(listaImagensObstaculos)):
     listaImagensObstaculos[i] = pygame.transform.flip(listaImagensObstaculos[i], True, False)
     # Rotaciona a imagem em 35 graus
     listaImagensObstaculos[i] = pygame.transform.rotate(listaImagensObstaculos[i], 35)
+
 
 # ICONES de vida
 iconeVida = pygame.image.load("assets/Icons/Icon29.png").convert_alpha()
@@ -301,8 +301,8 @@ while True:
     # Cria o texto para o tempo de jogo
     textoTempo = fonteTempo.render(str(int(tempoJogo)), False, (255, 255, 255))
 
-    # Cria o texto para a Pontuação
-    textoPontuacao = fonteTempo.render(str(int(pontuacaoJogo)), False, (255, 255, 255))
+    # # Cria o texto para a Pontuação
+    # textoPontuacao = fonteTempo.render(str(int(pontuacaoJogo)), False, (255, 255, 255))
 
     # Cria o texto para a Pontuação com uma mensagem
     textoPontuacao = fonteTempo.render(f"Pontos: {int(pontuacaoJogo)}", False, (255, 255, 255))
@@ -360,6 +360,15 @@ while True:
         indexFrameAndando = (indexFrameAndando + 1) % len(listFramesAndando)
         tempoAnimacaoAndando = 0.0
 
+
+    # Verifica se o tempo de animação do personagem andando é maior ou igual ao tempo de animação
+    if tempoAnimacaoAtack >= 1 / velocidadeAnimacaoAtack:
+        # Atualiza o frame do personagem andando
+        indexFrameAtack = (indexFrameAtack +1) % len(listFramesAtack)
+        tempoAnimacaoAtack = 0.0
+        # Atualiza a animação do personagem andando
+    tempoAnimacaoAtack += dt
+
          # Atualiza a animação do personagem morto
     if GameOver and indexFrameMorrendo != len(listFramesMorrendo) - 1:
         tempoAnimacaoMorrendo += dt
@@ -367,10 +376,21 @@ while True:
     if tempoAnimacaoMorrendo >= 1 / velocidadeAnimacaoMorrendo:
         # Atualiza o frame do personagem morto
         indexFrameMorrendo = (indexFrameMorrendo + 1) % len(listFramesMorrendo)
-        tempoAnimacaoMorrendo = 0.0    
+        tempoAnimacaoMorrendo = 0.0
 
-    # Verifica se o personagem está andando
+    
+
+    # Verifica se o personagem está andando ou atacando
     estaAndando = False
+    atacando = False
+    
+
+    # Função para realizar o ataque
+    def atacar():
+        global atacando
+        atacando = True
+                
+        print("Personagem atacando!")
 
     # Pega as teclas que foram pressionadas
     listTeclas = pygame.key.get_pressed()
@@ -384,9 +404,9 @@ while True:
             direcaoPersonagem = 1
             estaAndando = True
 
-        if listTeclas[pygame.K_0]:
-            listFramesAtack
-            estaAndando = False
+         # Verifica se a tecla de ataque foi pressionada
+        if listTeclas[pygame.K_a]:  # Substitua K_0 pela tecla que desejar
+            atacar()
 
         if listTeclas[pygame.K_SPACE]: # Verifica se a tecla espaço foi pressionada
             if personagemRect.centery == ALTURA_CHAO: # Verifica se o personagem está no chão
@@ -415,17 +435,19 @@ while True:
         personagemRect.centery = ALTURA_CHAO
 
     personagemColisaoRect.midbottom = personagemRect.midbottom
+    
 
-    #Desenha o personagem
+   # Desenha o personagem
     if not GameOver:
-        if gravidade < 0: # Verifica se o personagem está subindo
+        if atacando:  # Verifica se o personagem está atacando
             frame = listFramesAtack[indexFrameAtack]
-        else:
-            if estaAndando: # Verifica se o personagem está andando
-                frame = listFramesAndando[indexFrameAndando]
-                velocidadeAnimacaoAndando = 4
-            else:
-                frame = listFramesParado[indexFrameParado]
+            velocidadeAnimacaoAndando = 1
+
+        elif estaAndando:  # Verifica se o personagem está andando
+            frame = listFramesAndando[indexFrameAndando]
+            velocidadeAnimacaoAndando = 4
+        else:  # O personagem está parado
+            frame = listFramesParado[indexFrameParado]
     else:
         frame = listFramesMorrendo[indexFrameMorrendo]
 
