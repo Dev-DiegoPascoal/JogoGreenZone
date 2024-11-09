@@ -40,6 +40,15 @@ folhaSpritesParadoNoCarro = pygame.image.load("assets/Golfista/ParadoNoCarro.png
 folhaSpritesSofrendoDano = pygame.image.load("assets/Golfista/SofrendoDano.png").convert_alpha()
 folhaSpritesSofrendoDanoCarro = pygame.image.load("assets/Golfista/SofrendoDanoCarro.png").convert_alpha()
 
+#Folhas Sprites TANCK GUERRA
+folhaSpritesTanckAndando = pygame.image.load("assets/TanckGuerraVerde/Andando.png").convert_alpha()
+folhaSpritesTanckAndando2 = pygame.image.load("assets/TanckGuerraVerde/Andando2.png").convert_alpha()
+folhaSpritesTanckAtackVoador = pygame.image.load("assets/TanckGuerraVerde/AtackVoador.png").convert_alpha()
+folhaSpritesTanckAtacando = pygame.image.load("assets/TanckGuerraVerde/Atacando.png").convert_alpha()
+folhaSpritesTanckBomba = pygame.image.load("assets/TanckGuerraVerde/Bomba.png").convert_alpha()
+folhaSpritesTanckDano = pygame.image.load("assets/TanckGuerraVerde/Dano.png").convert_alpha()
+folhaSpritesTanckMorte = pygame.image.load("assets/TanckGuerraVerde/Morte.png").convert_alpha()
+
 #Define os frames
 listFramesAndando = []
 listFramesAndandoCarro = []
@@ -52,6 +61,15 @@ listFramesParado = []
 listFramesParadoCarro = []
 listFramesSofrendoDano = []
 listFramesSofrendoDanoCarro = []
+
+#Define os frames do Personagem Tanck
+listFramesTanckAndando = []
+listFramesTanckAndando2 = []
+listFramesTanckAtackVoador = []
+listFramesTanckAtacando = []
+listFramesTanckBomba = []
+listFramesTanckDano = []
+listFramesTanckMorte = []
 
 #Cria os frames do personagem na lista de listFramesParado
 for i in range(1):
@@ -100,14 +118,50 @@ for i in range(6):
     listFramesMorrendoCarro.append(frame)
 
 for i in range(2):
-    frame = folhaSpritesSofrendoDano.subsurface(i * 60, 0, 60, 60)
+    frame = folhaSpritesSofrendoDano.subsurface(i * 72, 0, 72, 72)
     frame = pygame.transform.scale(frame, (150, 150))
     listFramesSofrendoDano.append(frame)
 
 for i in range(2):
-    frame = folhaSpritesSofrendoDanoCarro.subsurface(i * 60, 0, 60, 60)
+    frame = folhaSpritesSofrendoDanoCarro.subsurface(i * 72, 0, 72, 72)
     frame = pygame.transform.scale(frame, (150, 150))
     listFramesSofrendoDanoCarro.append(frame)
+
+# Range do Tanque de Guerra
+for i in range(4):
+    frame = folhaSpritesTanckAndando.subsurface(i * 72, 0, 72, 72)
+    frame = pygame.transform.scale(frame, (190, 190))
+    listFramesTanckAndando.append(frame)
+
+for i in range(6):
+    frame = folhaSpritesTanckAndando2.subsurface(i * 72, 0, 72, 72)
+    frame = pygame.transform.scale(frame, (150, 150))
+    listFramesTanckAndando2.append(frame)
+
+for i in range(8):
+    frame = folhaSpritesTanckAtacando.subsurface(i * 72, 0, 72, 72)
+    frame = pygame.transform.scale(frame, (150, 150))
+    listFramesTanckAtacando.append(frame)
+
+for i in range(6):
+    frame = folhaSpritesTanckAtackVoador.subsurface(i * 72, 0, 72, 72)
+    frame = pygame.transform.scale(frame, (150, 150))
+    listFramesTanckAtackVoador.append(frame)
+
+for i in range(1):
+    frame = folhaSpritesTanckBomba.subsurface(i * 5, 0, 5, 5)
+    frame = pygame.transform.scale(frame, (150, 150))
+    listFramesTanckBomba.append(frame)
+
+for i in range(2):
+    frame = folhaSpritesTanckDano.subsurface(i * 72, 0, 72, 72)
+    frame = pygame.transform.scale(frame, (150, 150))
+    listFramesTanckDano.append(frame)
+
+for i in range(6):
+    frame = folhaSpritesTanckMorte.subsurface(i * 72, 0, 72, 72)
+    frame = pygame.transform.scale(frame, (150, 150))
+    listFramesTanckMorte.append(frame)
 
 # Variaveis da animação do personagem parado
 indexFrameParado = 0 # Controla qual imagem está sendo mostrada na tela
@@ -158,6 +212,47 @@ indexFrameSofrendoDanoCarro = 0
 tempoAnimacaoSofrendoDanoCarro = 0.0
 velocidadeAnimacaoSofrendoDanoCarro = 3
 
+## Variáveis da animação dos Personagem TANK DE GUERRA
+# Variaveis da animação do Tanck Andando
+indexFrameSTanckAndando = 0
+tempoAnimacaoTanckAndando = 0.0
+velocidadeAnimacaoTanckAndando= 3
+
+# Variaveis da animação do Tanck Andando2
+indexFrameSTanckAndando2 = 0
+tempoAnimacaoTanckAndando2 = 0.0
+velocidadeAnimacaoTanckAndando2= 3
+
+# Variaveis da animação do Tanck Andando2
+indexFrameSTanckAndando2 = 0
+tempoAnimacaoTanckAndando2 = 0.0
+velocidadeAnimacaoTanckAndando2= 3
+
+# Variaveis da animação do Tanck Atacando
+indexFrameSTanckAtacando = 0
+tempoAnimacaoTanckAtacando = 0.0
+velocidadeAnimacaoTanckAtacando= 3
+
+# Variaveis da animação do Tanck Voando
+indexFrameSTanckAtackVoador = 0
+tempoAnimacaoTanckAtackVoador = 0.0
+velocidadeAnimacaoTanckAtackVoador= 3
+
+# Variaveis da animação da Bomba
+indexFrameSTanckBomba = 0
+tempoAnimacaoTanckBomba = 0.0
+velocidadeAnimacaoTanckBomba= 3
+
+# Variaveis da animação do Tanck Sofrendo Dano
+indexFrameSTanckDano = 0
+tempoAnimacaoTanckDano = 0.0
+velocidadeAnimacaoTanckDano = 3
+
+# Variaveis da animação do Tanck Morrendo
+indexFrameSTanckMorte = 0
+tempoAnimacaoTanckMorte = 0.0
+velocidadeAnimacaoTanckMorte= 3
+
 #Retangulo do personagem na tela para melhor controle e posicionamento do personagem
 personagemRect = listFramesParado[0].get_rect(midbottom=(250, 480))
 personagemColisaoRect = pygame.Rect(personagemRect.x, personagemRect.y, 80, 120)
@@ -169,7 +264,18 @@ estaAndando = False # Define se o personagem está andando ou não
 #ASSETS PARA OS OBSTÁCULOS
 listaImagensObstaculos = [
     pygame.image.load(f"assets/Obstaculos/Icon28_{i:02d}.png").convert_alpha() for i in range(1, 16)
-] # Lista de obstáculos que aparecerão na tela
+]
+
+listaImagensTanckGuerraAndando = [
+    pygame.image.load(f"assets/TanckGuerraVerde/{nome}.png").convert_alpha()
+    for nome in [
+        "Andando", "Andando2"
+    ]
+]
+
+for i in range(len(listaImagensTanckGuerraAndando)):
+    listaImagensTanckGuerraAndando[i] = pygame.transform.flip(listaImagensTanckGuerraAndando[i], True, False)
+    # listaImagensTanckGuerraAndando[i] = pygame.transform.scale(listaImagensTanckGuerraAndando[i], (144, 144))
 
 # Loop que redimensiona as imagens dos obstáculos
 for i in range(len(listaImagensObstaculos)):
@@ -179,7 +285,6 @@ for i in range(len(listaImagensObstaculos)):
     listaImagensObstaculos[i] = pygame.transform.flip(listaImagensObstaculos[i], True, False)
     # Rotaciona a imagem em 35 graus
     listaImagensObstaculos[i] = pygame.transform.rotate(listaImagensObstaculos[i], 35)
-
 
 # ICONES de vida
 iconeVida = pygame.image.load("assets/Icons/Icon29.png").convert_alpha()
@@ -214,9 +319,10 @@ GameOver = False
 tempoJogo = 0
 pontuacaoJogo = 0
 obstaculoDestruido = 0
-tempo_acumulado = 0  # Variável para acumular o tempo decorrido
-intervalo_tempo = 5  # Intervalo de tempo desejado em segundos
+tempo_acumulado = 0 
+intervalo_tempo = 5  
 DURACAO_FRAME_ATAQUE = 0.1
+apareceuChefao = False
 
 listaObstaculos = [] # Lista de obstáculos que aparecerão na tela
 
@@ -227,64 +333,99 @@ tempoMaximoEntreObstaculos = 3000
 ADICIONA_OBSTACULO = pygame.USEREVENT + 2 # Evento para adicionar um obstáculo na tela
 pygame.time.set_timer(ADICIONA_OBSTACULO, randint(500, tempoMaximoEntreObstaculos)) # Adiciona um obstáculo a cada 1 segundo
 
+listaChefao = []
+
+ADICIONA_CHEFAO = pygame.USEREVENT + 1 
+pygame.time.set_timer(ADICIONA_CHEFAO, 10000)  
+
+# Função para adicionar o chefão
+def adiciona_chefao():
+    global apareceuChefao
+    if not apareceuChefao:
+        # Posição inicial do chefão
+        chefaoRect = listaImagensTanckGuerraAndando[0].get_rect(midbottom=(1280, 500))  # Posição inicial
+
+        chefao = {
+            "rect": chefaoRect,
+            "imagens": listaImagensTanckGuerraAndando,  # Lista de imagens para animação
+            "vida": 100,  # Vida inicial do chefão
+            "estado": 0,  # Indice para controlar o estado da animação (ex: "Andando", "Atacando", etc.)
+            "tempo_animacao": 0  # Tempo acumulado para controlar a animação
+        }
+
+        listaChefao.append(chefao)  # Adiciona o chefão à lista
+        apareceuChefao = True
+        print("Chefão apareceu!")
+
+    # No loop principal, vamos desenhar o chefão com animação
+tempo_por_frame = 300 # O tempo entre cada troca de frame (em milissegundos)
+
 #Toca o som do jogo
-pygame.mixer.music.load("assets/Musicas/CidadeDeserta.mp3")  # Use .load para música
-pygame.mixer.music.play(-1)  #Toca em loop
+pygame.mixer.music.load("assets/Musicas/CidadeDeserta.mp3") 
+pygame.mixer.music.play(-1) 
 
-# LOOP PRINCIPAL
 while True:
-    #Loop que verifica todos os eventos que acontecem no jogo
+    # Loop de eventos
     for event in pygame.event.get():
-
-        # Verifica se o evento é de fechar a janela
         if event.type == pygame.QUIT:
-            #Para a música
             pygame.mixer.music.stop() 
-            pygame.quit()  # Fecha o jogo
-            exit()  # Fecha o programa
-            
-            #Atualiza a tela após processar todos os eventos
-            pygame.display.flip()
+            pygame.quit()
+            exit()
 
-        if not GameOver:
-            if event.type == AUMENTA_DIFICULDADE:
-                velocidadePersonagem += 4
+        # Aumenta a dificuldade
+        if event.type == AUMENTA_DIFICULDADE:
+            velocidadePersonagem += 4
+            if tempoMaximoEntreObstaculos > 1100:
+                tempoMaximoEntreObstaculos -= 300
+            pygame.time.set_timer(ADICIONA_OBSTACULO, randint(800, tempoMaximoEntreObstaculos))
 
-                if tempoMaximoEntreObstaculos > 1100:
-                    tempoMaximoEntreObstaculos -= 300
+        # Adiciona obstáculos
+        if event.type == ADICIONA_OBSTACULO:
+            obstaculoImage = listaImagensObstaculos[randint(0, len(listaImagensObstaculos) - 1)]
+            posicaoX = randint(1280, 1500)
+            obstaculoRect = obstaculoImage.get_rect(midbottom=(posicaoX, 620))
+            obstaculo = {
+                "rect": obstaculoRect,
+                "image": obstaculoImage
+            }
+            listaObstaculos.append(obstaculo)
 
-                pygame.time.set_timer(ADICIONA_OBSTACULO, randint(800, tempoMaximoEntreObstaculos))
+        # Adiciona o chefão
+        if event.type == ADICIONA_CHEFAO:
+            if apareceuChefao == False:
+                # Adiciona o chefão (apenas uma vez por evento)
+                adiciona_chefao()  # Chama a função para adicionar o chefão
 
-            if event.type == ADICIONA_OBSTACULO:
-                obstaculoImage = listaImagensObstaculos[randint(0, len(listaImagensObstaculos) - 1)]
-                posicaoX = randint(1280, 1500)
-                obstaculoRect = obstaculoImage.get_rect(midbottom=(posicaoX, 620))
+        # Atualizar obstáculos na tela
+        for obstaculo in listaObstaculos[:]:  # Usando uma cópia da lista para evitar problemas ao remover itens
+            # Movimento dos obstáculos
+            obstaculo["rect"].x -= 5  # Ajuste a velocidade de movimento dos obstáculos
 
-                obstaculo = {
-                    "rect": obstaculoRect,
-                    "image": obstaculoImage
-                }
+            # Verifica colisão ou outros comportamentos, como remoção de obstáculos fora da tela
+            if obstaculo["rect"].x < 0:
+                listaObstaculos.remove(obstaculo)
 
-                listaObstaculos.append(obstaculo)
+            # Desenha os obstáculos
+            tela.blit(obstaculo["image"], obstaculo["rect"])
 
-        # Verifica o ataque
-        listTeclas = pygame.key.get_pressed()
-        if listTeclas[pygame.K_a] and not atacando:
-            atacando = True
-            indexFrameAtack = 0
-            tempoAnimacaoAtack = 0.0
+            # Verifica o ataque
+            listTeclas = pygame.key.get_pressed()
+            if listTeclas[pygame.K_a] and not atacando:
+                atacando = True
+                indexFrameAtack = 0
+                tempoAnimacaoAtack = 0.0
 
-            # Atualiza a animação de ataque
-            if atacando:
-                tempoAnimacaoAtack += dt
-                if tempoAnimacaoAtack >= DURACAO_FRAME_ATAQUE:
-                    indexFrameAtack += 1
-                    tempoAnimacaoAtack = 0.0
-                    if indexFrameAtack >= len(listFramesAtack):
-                        indexFrameAtack = 0
-                        atacando = False
+                # Atualiza a animação de ataque
+                if atacando:
+                    tempoAnimacaoAtack += dt
+                    if tempoAnimacaoAtack >= DURACAO_FRAME_ATAQUE:
+                        indexFrameAtack += 1
+                        tempoAnimacaoAtack = 0.0
+                        if indexFrameAtack >= len(listFramesAtack):
+                            indexFrameAtack = 0
+                            atacando = False
 
-            # Definir a área de alcance do ataque
+        # Definir a área de alcance do ataque
         alcanceAtaque = pygame.Rect(personagemRect.centerx, personagemRect.centery - 20, 100, 50)  # Ajuste o alcance conforme necessário
 
         # Verifica a colisão entre o ataque e os obstáculos
@@ -293,10 +434,10 @@ while True:
                 listaObstaculos.remove(obstaculo)  # Remove o obstáculo se colidir
                 pontuacaoJogo += 50
                 obstaculoDestruido += 1  
-                   
+
     tela.fill((255, 255, 255))  # Preenche a tela com a cor branca
 
-    # Verifica se o jogador perdeu todas as vidasa
+    # Verifica se o jogador perdeu todas as vidas
     if vidas <= 0:
         GameOver = True
 
@@ -420,6 +561,26 @@ while True:
     estaAndando = False
     atacando = False
 
+    # Atualizar animação do chefão
+    for chefao in listaChefao:
+        # Atualiza o tempo de animação do chefão
+        chefao["tempo_animacao"] += relogio.get_time()
+
+        # Verifica se é hora de trocar de frame
+        if chefao["tempo_animacao"] > tempo_por_frame:
+            chefao["tempo_animacao"] = 0  # Reseta o tempo de animação
+            chefao["estado"] += 1  # Vai para o próximo estado da animação
+
+            # Se o índice do estado exceder o número de frames disponíveis, reinicia
+            if chefao["estado"] >= len(chefao["imagens"]):
+                chefao["estado"] = 0  # Reinicia a animação (volta para o primeiro frame)
+
+        # Obtém a imagem atual com base no estado da animação
+        imagem_atual = chefao["imagens"][chefao["estado"]]
+
+        # Desenha o chefão na tela
+        tela.blit(imagem_atual, chefao["rect"])
+
     # Função para realizar o ataque
     def atacar():
         global atacando
@@ -438,7 +599,7 @@ while True:
             estaAndando = True
 
          # Verifica se a tecla de ataque foi pressionada
-        if listTeclas[pygame.K_a]:  # Substitua K_0 pela tecla que desejar
+        if listTeclas[pygame.K_a]:
             atacar()
 
         if listTeclas[pygame.K_SPACE]: # Verifica se a tecla espaço foi pressionada
