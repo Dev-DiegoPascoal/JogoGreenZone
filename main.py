@@ -348,7 +348,7 @@ def adiciona_chefao():
         chefao = {
             "rect": chefaoRect,
             "imagens": listaImagensTanckGuerraAndando,  # Lista de imagens para animação
-            "vida": 100,  # Vida inicial do chefão
+            "vida": 100,  
             "estado": 0,  # Indice para controlar o estado da animação (ex: "Andando", "Atacando", etc.)
             "tempo_animacao": 0  # Tempo acumulado para controlar a animação
         }
