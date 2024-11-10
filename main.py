@@ -268,9 +268,7 @@ listaImagensObstaculos = [
 
 listaImagensTanckGuerraAndando = [
     pygame.image.load(f"assets/TanckGuerraVerde/{nome}.png").convert_alpha()
-    for nome in [
-        "Andando", "Andando2"
-    ]
+    for nome in ["Andando", "AtackVoador"]
 ]
 
 for i in range(len(listaImagensTanckGuerraAndando)):
@@ -343,7 +341,7 @@ def adiciona_chefao():
     global apareceuChefao
     if not apareceuChefao:
         # Posição inicial do chefão
-        chefaoRect = listaImagensTanckGuerraAndando[0].get_rect(midbottom=(1280, 500))  # Posição inicial
+        chefaoRect = listaImagensTanckGuerraAndando[0].get_rect(midbottom=(1280, 500))
 
         chefao = {
             "rect": chefaoRect,
@@ -351,13 +349,14 @@ def adiciona_chefao():
             "vida": 100,  
             "estado": 0,  # Indice para controlar o estado da animação (ex: "Andando", "Atacando", etc.)
             "tempo_animacao": 0  # Tempo acumulado para controlar a animação
+
         }
+        
 
         listaChefao.append(chefao)  # Adiciona o chefão à lista
         apareceuChefao = True
         print("Chefão apareceu!")
-
-    # No loop principal, vamos desenhar o chefão com animação
+#No loop principal, vamos desenhar o chefão com animação
 tempo_por_frame = 300 # O tempo entre cada troca de frame (em milissegundos)
 
 #Toca o som do jogo
@@ -394,7 +393,8 @@ while True:
         if event.type == ADICIONA_CHEFAO:
             if apareceuChefao == False:
                 # Adiciona o chefão (apenas uma vez por evento)
-                adiciona_chefao()  # Chama a função para adicionar o chefão
+                adiciona_chefao()
+                  # Chama a função para adicionar o chefão
 
         # Atualizar obstáculos na tela
         for obstaculo in listaObstaculos[:]:  # Usando uma cópia da lista para evitar problemas ao remover itens
