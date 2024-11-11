@@ -340,19 +340,18 @@ pygame.time.set_timer(ADICIONA_CHEFAO, 10000)
 def adiciona_chefao():
     global apareceuChefao
     if not apareceuChefao:
-        # Posição inicial do chefão
-        chefaoRect = listaImagensTanckGuerraAndando[0].get_rect(midbottom=(1280, 500))
+        #Posição inicial do chefão
+        chefaoRect = listaImagensTanckGuerraAndando[0].get_rect(midbottom=(1280, 610))
 
         chefao = {
             "rect": chefaoRect,
-            "imagens": listaImagensTanckGuerraAndando,  # Lista de imagens para animação
+            "imagens": listaImagensTanckGuerraAndando,
             "vida": 100,  
             "estado": 0,  # Indice para controlar o estado da animação (ex: "Andando", "Atacando", etc.)
             "tempo_animacao": 0  # Tempo acumulado para controlar a animação
 
         }
         
-
         listaChefao.append(chefao)  # Adiciona o chefão à lista
         apareceuChefao = True
         print("Chefão apareceu!")
