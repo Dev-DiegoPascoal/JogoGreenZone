@@ -348,8 +348,7 @@ def adiciona_chefao():
             "imagens": listaImagensTanckGuerraAndando,
             "vida": 100,  
             "estado": 0,  # Indice para controlar o estado da animação (ex: "Andando", "Atacando", etc.)
-            "tempo_animacao": 0  # Tempo acumulado para controlar a animação
-
+            "tempo_animacao": 0  # Tempo acumulado para controlar a animação    
         }
         
         listaChefao.append(chefao)  # Adiciona o chefão à lista
@@ -388,12 +387,10 @@ while True:
             }
             listaObstaculos.append(obstaculo)
 
-        # Adiciona o chefão
         if event.type == ADICIONA_CHEFAO:
             if apareceuChefao == False:
                 # Adiciona o chefão (apenas uma vez por evento)
                 adiciona_chefao()
-                  # Chama a função para adicionar o chefão
 
         # Atualizar obstáculos na tela
         for obstaculo in listaObstaculos[:]:  # Usando uma cópia da lista para evitar problemas ao remover itens
