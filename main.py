@@ -8,9 +8,12 @@ pygame.mixer.init()
 pygame.init()
 relogio = pygame.time.Clock()
 
+clock = pygame.time.Clock()
+
 #Define o tamanho da Tela
 tamanhoTela = (1280, 720)
 tela = pygame.display.set_mode(tamanhoTela)
+
 
 pygame.display.set_caption("Green Zone")
 dt = 0
@@ -135,7 +138,7 @@ for i in range(4):
 
 for i in range(6):
     frame = folhaSpritesTanckAndando2.subsurface(i * 72, 0, 72, 72)
-    frame = pygame.transform.scale(frame, (150, 150))
+    frame = pygame.transform.scale(frame, (190, 190))
     listFramesTanckAndando2.append(frame)
 
 for i in range(8):
@@ -268,12 +271,30 @@ listaImagensObstaculos = [
 
 listaImagensTanckGuerraAndando = [
     pygame.image.load(f"assets/TanckGuerraVerde/{nome}.png").convert_alpha()
-    for nome in ["Andando", "AtackVoador"]
+    for nome in ["Andando"]
 ]
 
+listaImagensTanckGuerraAtacando = [
+    pygame.image.load(f"assets/TanckGuerraVerde/{nome}.png").convert_alpha()
+    for nome in ["AtackVoador"]
+]
+
+listaImagensTanckGuerraAndando2 = [
+    pygame.image.load(f"assets/TanckGuerraVerde/{nome}.png").convert_alpha()
+    for nome in ["Andando2"]
+]
+
+# Aplicar transformações para a lista de imagens de "andando"
 for i in range(len(listaImagensTanckGuerraAndando)):
     listaImagensTanckGuerraAndando[i] = pygame.transform.flip(listaImagensTanckGuerraAndando[i], True, False)
-    # listaImagensTanckGuerraAndando[i] = pygame.transform.scale(listaImagensTanckGuerraAndando[i], (144, 144))
+
+# Aplicar transformações para a lista de imagens de "atacando"
+for i in range(len(listaImagensTanckGuerraAtacando)):
+    listaImagensTanckGuerraAtacando[i] = pygame.transform.scale(listaImagensTanckGuerraAtacando[i], (144, 144))
+
+    # Aplicar transformações para a lista de imagens de "atacando"
+for i in range(len(listaImagensTanckGuerraAndando2)):
+    listaImagensTanckGuerraAndando2[i] = pygame.transform.scale(listaImagensTanckGuerraAndando2[i], (144, 144))
 
 # Loop que redimensiona as imagens dos obstáculos
 for i in range(len(listaImagensObstaculos)):
@@ -333,29 +354,38 @@ pygame.time.set_timer(ADICIONA_OBSTACULO, randint(500, tempoMaximoEntreObstaculo
 
 listaChefao = []
 
-ADICIONA_CHEFAO = pygame.USEREVENT + 1 
+ADICIONA_CHEFAO = pygame.USEREVENT = 1 
 pygame.time.set_timer(ADICIONA_CHEFAO, 10000)  
 
 # Função para adicionar o chefão
 def adiciona_chefao():
     global apareceuChefao
     if not apareceuChefao:
-        #Posição inicial do chefão
+        apareceuChefao = True
+
+        # Posição inicial do chefão
         chefaoRect = listaImagensTanckGuerraAndando[0].get_rect(midbottom=(1280, 610))
 
         chefao = {
             "rect": chefaoRect,
-            "imagens": listaImagensTanckGuerraAndando,
-            "vida": 100,  
-            "estado": 0,  # Indice para controlar o estado da animação (ex: "Andando", "Atacando", etc.)
-            "tempo_animacao": 0  # Tempo acumulado para controlar a animação    
+            "imagens": {
+                "andando": listaImagensTanckGuerraAndando,
+                "atacando": listaImagensTanckGuerraAtacando,
+                "andando2": listaImagensTanckGuerraAndando2
+            },
+            "vida": 100,
+            "estado": "andando",  # Estado inicial como "andando"
+            "tempo_animacao": 0  # Tempo acumulado para controlar a animação
         }
-        
+
         listaChefao.append(chefao)  # Adiciona o chefão à lista
-        apareceuChefao = True
         print("Chefão apareceu!")
+
+
+    if apareceuChefao:
+        pygame.time.set_timer(ADICIONA_CHEFAO, 0)
 #No loop principal, vamos desenhar o chefão com animação
-tempo_por_frame = 300 # O tempo entre cada troca de frame (em milissegundos)
+tempo_por_frame = 200 # O tempo entre cada troca de frame (em milissegundos)
 
 #Toca o som do jogo
 pygame.mixer.music.load("assets/Musicas/CidadeDeserta.mp3") 
@@ -429,7 +459,7 @@ while True:
             if alcanceAtaque.colliderect(obstaculo["rect"]):  # Verifica a colisão
                 listaObstaculos.remove(obstaculo)  # Remove o obstáculo se colidir
                 pontuacaoJogo += 50
-                obstaculoDestruido += 1  
+                obstaculoDestruido += 1 
 
     tela.fill((255, 255, 255))  # Preenche a tela com a cor branca
 
@@ -557,33 +587,54 @@ while True:
     estaAndando = False
     atacando = False
 
-    # Atualizar animação do chefão
-    for chefao in listaChefao:
-        # Atualiza o tempo de animação do chefão
-        chefao["tempo_animacao"] += relogio.get_time()
+    for chefao in listaChefao:  # Verifique se a lista de chefões não está vazia
+        # Lógica para mover o chefão (exemplo simples)
 
-        # Verifica se é hora de trocar de frame
-        if chefao["tempo_animacao"] > tempo_por_frame:
-            chefao["tempo_animacao"] = 0  # Reseta o tempo de animação
-            chefao["estado"] += 1  # Vai para o próximo estado da animação
+        if chefao["estado"] == "andando":
+            chefao["rect"].x -= 1  # Move o chefão para a esquerda
 
-            # Se o índice do estado exceder o número de frames disponíveis, reinicia
-            if chefao["estado"] >= len(chefao["imagens"]):
-                chefao["estado"] = 0  # Reinicia a animação (volta para o primeiro frame)
+        if chefao["rect"].x < 0:
+            chefao["rect"].x = 1280  # Reseta a posição para a direita da tela
+        
+        # Atualiza o tempo de animação (antes de alternar o estado)
+        chefao["tempo_animacao"] += clock.get_time()
+        
+        # Alternar estados com base no tempo
+        if chefao["tempo_animacao"] >= 2000:  # Troca de estado a cada 2 segundos (2000ms)
+            if chefao["estado"] == "andando2":
+                chefao["estado"] = "andando2"  # Troca para o estado "atacando"
+            elif chefao["estado"] == "atacando":
+                chefao["estado"] = "atacando"  # Troca para o estado "atirando"
+            else:
+                chefao["estado"] = "andando"  # Retorna para o estado "andando"
+            
+            chefao["tempo_animacao"] = 0  # Reseta o tempo para começar o ciclo novamente
+        
+        # Obtenha o estado atual do chefão, com valor padrão "andando"
+        estado_atual = chefao.get("estado", "andando")
+            
+        # Obtenha a lista de imagens para o estado atual
+        imagens_estado = chefao["imagens"].get(estado_atual, None)
+        
+        if imagens_estado is None:
+            print(f"Estado '{estado_atual}' não tem imagens definidas!")
+            continue  # Pula para o próximo chefão, se houver
 
-        # Obtém a imagem atual com base no estado da animação
-        imagem_atual = chefao["imagens"][chefao["estado"]]
+        # Controle de animação: Seleciona o frame atual
+        total_frames = len(imagens_estado)  # Quantidade de frames para o estado atual
+        frame_atual = (chefao["tempo_animacao"] // tempo_por_frame) % total_frames  # Calcula o índice do frame atual
+        imagem_atual = imagens_estado[frame_atual]  # Seleciona a imagem específica do frame atual
 
         # Desenha o chefão na tela
         tela.blit(imagem_atual, chefao["rect"])
 
+
+    listTeclas = pygame.key.get_pressed()
+    
     # Função para realizar o ataque
     def atacar():
         global atacando
         atacando = True
-
-    # Pega as teclas que foram pressionadas
-    listTeclas = pygame.key.get_pressed()
 
     if not GameOver:
         if listTeclas[pygame.K_LEFT]: # Verifica se a tecla esquerda foi pressionada
